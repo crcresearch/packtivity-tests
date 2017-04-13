@@ -7,8 +7,11 @@
 #
 # This Source Code Form is subject to the terms of the MIT License
 #
+
 import os
 import subprocess
+
+from pip._vendor.distlib._backport import shutil
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,12 +20,12 @@ def test_run():
     cwd = os.getcwd()
     os.chdir(base_dir)
     print os.getcwd()
-    # os.rmdir("outdir")
+    if os.path.exists("_packtivity"):
+        shutil.rmtree("_packtivity")
     try:
         subprocess.call(["./run.sh"])
     finally:
         os.chdir(cwd)
 
     # Make sure output files were created
-    assert(os.path.exists(os.path.join(base_dir, "outdir", "output.lhco")))
-    assert(os.path.exists(os.path.join(base_dir, "outdir", "output.root")))
+    assert(os.path.exists(os.path.join(base_dir, "_packtivity")))
